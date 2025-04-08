@@ -13,7 +13,7 @@ public class usersBase implements Serializable
     }
     public boolean userExist(String username) {
         for(userInterface us: users) {
-            if(us.getUserName().equals(username)) { // Используем equals() вместо ==
+            if(us.getUserName().equals(username)) { 
                 return true;
             }
         }
