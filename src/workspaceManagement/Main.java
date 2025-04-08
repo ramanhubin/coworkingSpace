@@ -16,6 +16,16 @@ public class Main {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         initializeSampleData();
+        TextDataLoader DataLoader = new TextDataLoader();
+        adminInterface.setWorkspaces(TextDataLoader.loadOnStartup());
+
+        if (adminInterface.getWorkspaces().isEmpty()) {
+            initializeSampleData();
+        } else {
+            adminInterface.getWorkspaces().addAll(adminInterface.getWorkspaces());
+        }
+
+
         try {
             ApplicationStateManager loadedState = ApplicationStateManager.loadData("save.dat");
             usersBase = loadedState.getUsersBase();
@@ -51,7 +61,7 @@ public class Main {
     }
 
     private static void initializeSampleData() {    //Adding some data at start
-        adminInterface.addWorkspace(new workspace(1, "Open Space", 15.0f));
+        adminInterface.addWorkspace(new workspace(1, "Closed Space", 15.0f));
         adminInterface.addWorkspace(new workspace(2, "Private Office", 30.0f));
         adminInterface.addWorkspace(new workspace(3, "Meeting Room", 25.0f));
     }

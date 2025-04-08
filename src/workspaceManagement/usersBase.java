@@ -8,8 +8,6 @@ public class usersBase implements Serializable
 {
     private final List<userInterface> users =new ArrayList<userInterface>();
 
-
-
     public void addUser(userInterface user){
         users.add(user);
     }

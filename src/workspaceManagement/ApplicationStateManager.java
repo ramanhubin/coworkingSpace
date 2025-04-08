@@ -25,7 +25,6 @@ public class ApplicationStateManager implements Serializable {
         }
     }
 
-
     public usersBase getUsersBase() {
         return usersBase;
     }
