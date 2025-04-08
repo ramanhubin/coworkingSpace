@@ -8,7 +8,7 @@ public class workspace {
     private final int id;
     private final String type;
     private final float price;
-    private final List<Reservation> reservations;
+    private final List<Reservation> reservations; //List to store reservations connected to a current workspace
 
     public workspace(int id, String type, float price) {
         this.id = id;
@@ -31,7 +31,7 @@ public int getWorkspaceId(){
         return price;
     }
 
-    public boolean checkAvailability(LocalDateTime startTime, LocalDateTime endTime) {
+    public boolean checkAvailability(LocalDateTime startTime, LocalDateTime endTime) {  //This method checks availability of workspace
         for (Reservation res : reservations) {
             if (startTime.isBefore(res.getEndTime()) && endTime.isAfter(res.getStartTime())) {
                 return false;
@@ -40,12 +40,12 @@ public int getWorkspaceId(){
         return true;
     }
 
-    public void addReservation(Reservation reservation) {
+    public void addReservation(Reservation reservation) { //Adding new reservation
         reservations.add(reservation);
     }
 
     public boolean removeReservation(String userName) {
-        return reservations.removeIf(res -> res.getUsername().equals(userName));
+        return reservations.removeIf(res -> res.getUsername().equals(userName));  //Deleting all the reservations connected to user
     }
 
     public List<Reservation> getReservations() {

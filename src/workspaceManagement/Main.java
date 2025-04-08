@@ -1,5 +1,6 @@
 package workspaceManagement;
 
+import java.net.SocketOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -9,9 +10,11 @@ public class Main {
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private static final adminInterface adminInterface = new adminInterface();
     private static final Scanner scanner = new Scanner(System.in);
+    static usersBase usersBase = new usersBase();
 
     public static void main(String[] args) {
         initializeSampleData();
+
         System.out.println("=== Coworking Space Reservation System ===");
 
         while (true) {
@@ -21,9 +24,9 @@ public class Main {
             System.out.println("3. Exit");
             System.out.print("Select option: ");
 
-            int choice = readIntInput();
+            int choiceEntrance = readIntInput();
 
-            switch (choice) {
+            switch (choiceEntrance) {
                 case 1 -> adminMenu();
                 case 2 -> userMenu();
                 case 3 -> {
@@ -36,7 +39,7 @@ public class Main {
         }
     }
 
-    private static void initializeSampleData() {
+    private static void initializeSampleData() {    //Adding some data at start
         adminInterface.addWorkspace(new workspace(1, "Open Space", 15.0f));
         adminInterface.addWorkspace(new workspace(2, "Private Office", 30.0f));
         adminInterface.addWorkspace(new workspace(3, "Meeting Room", 25.0f));
@@ -91,9 +94,23 @@ public class Main {
     }
 
     private static void userMenu() {
+
+
+
         System.out.print("\nEnter your name: ");
+
+
         String userName = scanner.nextLine();
-        userInterface userInterface = new userInterface(userName);
+
+
+        userInterface user;
+
+        if(!usersBase.userExist(userName)) {
+            user = new userInterface(userName);
+            usersBase.addUser(user);
+        } else {
+            user = usersBase.getUser(userName);
+        }
 
         while (true) {
             System.out.println("\nUser Menu (" + userName + "):");
@@ -104,15 +121,21 @@ public class Main {
             System.out.println("5. Back to main menu");
             System.out.print("Select option: ");
 
-            int choice = readIntInput();
 
-            switch (choice) {
-                case 1 -> adminInterface.viewAllWorkspaces();
-                case 2 -> makeReservation(userInterface);
-                case 3 -> viewUserReservations(userInterface);
-                case 4 -> cancelReservation(userInterface);
-                case 5 -> { return; }
-                default -> System.out.println("Invalid option. Please try again.");
+            try {
+                int choice = readIntInput();
+                checkLogInSwitchInput(choice);
+                switch (choice) {
+                    case 1 -> adminInterface.viewAllWorkspaces();
+                    case 2 -> makeReservation(user);
+                    case 3 -> viewUserReservations(user);
+                    case 4 -> cancelReservation(user);
+                    case 5 -> { return; }
+                    default -> System.out.println("Invalid option. Please try again.");
+                }
+            }
+            catch(switchCaseInputException e) {
+                System.out.println("Invalid data");
             }
         }
     }
@@ -170,6 +193,9 @@ public class Main {
         }
     }
 
+
+
+    //Handling some exceptions that might occur
     private static int readIntInput() {
         while (true) {
             try {
@@ -179,7 +205,6 @@ public class Main {
             }
         }
     }
-
     private static float readFloatInput() {
         while (true) {
             try {
@@ -189,7 +214,6 @@ public class Main {
             }
         }
     }
-
     private static LocalDateTime readDateTimeInput() {
         while (true) {
             try {
@@ -197,6 +221,11 @@ public class Main {
             } catch (DateTimeParseException e) {
                 System.out.print("Invalid format. Please use yyyy-MM-dd HH:mm: ");
             }
+        }
+    }
+    public static void checkLogInSwitchInput(int input) throws switchCaseInputException{
+        if(input<1||input>5){
+            throw new switchCaseInputException("Input must be either 1 or 2");
         }
     }
 }

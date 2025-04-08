@@ -11,7 +11,9 @@ public class userInterface {
     public userInterface(String userName) {
         this.userName = userName;
         this.userReservations = new ArrayList<>();
+
     }
+
 
     public boolean makeReservation(LocalDateTime startTime, LocalDateTime endTime,
                                    int workspaceId, List<workspace> workspaces) {
@@ -45,7 +47,7 @@ public class userInterface {
     }
 
     public List<Reservation> getUserReservations() {
-        return new ArrayList<>(userReservations);
+        return new ArrayList<>(userReservations); //Using new  to secure
     }
 
     public String getUserName() {
