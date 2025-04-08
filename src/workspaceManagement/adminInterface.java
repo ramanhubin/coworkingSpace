@@ -11,7 +11,10 @@ public class adminInterface {
     public void addWorkspace(workspace workspace) {
         workspaces.add(workspace);
     }
-
+    public void setWorkspaces(List<workspace> wk){
+        workspaces.clear();
+        workspaces.addAll(wk);
+    }
     public boolean removeWorkspace(int id) {
         return workspaces.removeIf(ws -> ws.getId() == id);
     }

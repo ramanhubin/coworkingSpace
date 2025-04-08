@@ -1,10 +1,11 @@
 package workspaceManagement;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class workspace {
+public class workspace implements Serializable {
     private final int id;
     private final String type;
     private final float price;

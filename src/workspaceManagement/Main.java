@@ -1,5 +1,6 @@
 package workspaceManagement;
 
+import java.io.IOException;
 import java.net.SocketOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -7,14 +8,21 @@ import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class Main {
+
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private static final adminInterface adminInterface = new adminInterface();
     private static final Scanner scanner = new Scanner(System.in);
     static usersBase usersBase = new usersBase();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         initializeSampleData();
-
+        try {
+            ApplicationStateManager loadedState = ApplicationStateManager.loadData("save.dat");
+            usersBase = loadedState.getUsersBase();
+            adminInterface.setWorkspaces(loadedState.getWorkspaces());
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Ошибка загрузки: " + e.getMessage());
+        }
         System.out.println("=== Coworking Space Reservation System ===");
 
         while (true) {
@@ -32,7 +40,10 @@ public class Main {
                 case 3 -> {
                     System.out.println("Thank you for using our system. Goodbye!");
                     scanner.close();
+                    ApplicationStateManager stateManager = new ApplicationStateManager(usersBase, adminInterface.getWorkspaces());
+                    stateManager.saveData("save.dat");
                     System.exit(0);
+
                 }
                 default -> System.out.println("Invalid option. Please try again.");
             }
@@ -94,24 +105,15 @@ public class Main {
     }
 
     private static void userMenu() {
-
-
-
         System.out.print("\nEnter your name: ");
-
-
         String userName = scanner.nextLine();
-
-
         userInterface user;
-
         if(!usersBase.userExist(userName)) {
             user = new userInterface(userName);
             usersBase.addUser(user);
         } else {
             user = usersBase.getUser(userName);
         }
-
         while (true) {
             System.out.println("\nUser Menu (" + userName + "):");
             System.out.println("1. Browse available spaces");
@@ -120,7 +122,6 @@ public class Main {
             System.out.println("4. Cancel a reservation");
             System.out.println("5. Back to main menu");
             System.out.print("Select option: ");
-
 
             try {
                 int choice = readIntInput();
@@ -228,4 +229,6 @@ public class Main {
             throw new switchCaseInputException("Input must be either 1 or 2");
         }
     }
+
+
 }

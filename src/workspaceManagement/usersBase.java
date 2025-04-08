@@ -1,9 +1,10 @@
 package workspaceManagement;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class usersBase
+public class usersBase implements Serializable
 {
     private final List<userInterface> users =new ArrayList<userInterface>();
 

@@ -1,10 +1,11 @@
 package workspaceManagement;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class userInterface {
+public class userInterface implements Serializable {
     private final String userName;
     private final List<Reservation> userReservations;
 

@@ -1,8 +1,9 @@
 package workspaceManagement;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Reservation {
+public class Reservation implements Serializable {
     private final String userName;
     private final LocalDateTime startTime;
     private final LocalDateTime endTime;
