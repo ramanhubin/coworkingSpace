@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class adminInterface {
-    private final List<workspace> workspaces = new ArrayList<>();
+public class Admin {
+    private final List<Workspace> workspaces = new ArrayList<>();
 
-    public void addWorkspace(workspace workspace) {
+    public void addWorkspace(Workspace workspace) {
         workspaces.add(workspace);
     }
-    public void setWorkspaces(List<workspace> wk){
+    public void setWorkspaces(List<Workspace> wk){
         workspaces.clear();
         workspaces.addAll(wk);
     }
@@ -27,7 +27,7 @@ public class adminInterface {
 
         System.out.println("\nAvailable Workspaces:");
         System.out.println("ID\tType\t\tPrice/Hour");
-        for (workspace ws : workspaces) {
+        for (Workspace ws : workspaces) {
             System.out.printf("%d\t%-15s\t$%.2f%n", ws.getId(), ws.getType(), ws.getPrice());
         }
     }
@@ -36,7 +36,7 @@ public class adminInterface {
         boolean hasReservations = false;
 
         System.out.println("\nAll Reservations:");
-        for (workspace ws : workspaces) {
+        for (Workspace ws : workspaces) {
             List<Reservation> reservations = ws.getReservations();
             if (!reservations.isEmpty()) {
                 hasReservations = true;
@@ -57,7 +57,7 @@ public class adminInterface {
 
 
 
-    public List<workspace> getWorkspaces() {
+    public List<Workspace> getWorkspaces() {
         return new ArrayList<>(workspaces);
     }
 }
