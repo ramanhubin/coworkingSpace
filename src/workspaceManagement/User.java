@@ -35,7 +35,7 @@ public class User implements Serializable {
     }
 
     public boolean cancelReservation(int workspaceId, List<Workspace> workspaces) {
-        for (workspace ws : workspaces) {
+        for (Workspace ws : workspaces) {
             if (ws.getId() == workspaceId) {
                 boolean removed = ws.removeReservation(userName);
                 if (removed) {

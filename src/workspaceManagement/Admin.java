@@ -33,27 +33,25 @@ public class Admin {
     }
 
     public void viewAllReservations() {
-        boolean hasReservations = false;
+            List<Workspace> reservedWorkspaces = workspaces.stream()
+                    .filter(ws -> !ws.getReservations().isEmpty())
+                    .toList();
 
-        System.out.println("\nAll Reservations:");
-        for (Workspace ws : workspaces) {
-            List<Reservation> reservations = ws.getReservations();
-            if (!reservations.isEmpty()) {
-                hasReservations = true;
-                System.out.println("\nWorkspace " + ws.getId() + " (" + ws.getType() + "):");
-                for (Reservation res : reservations) {
-                    System.out.printf("- %s: %s to %s%n",
-                            res.getUsername(),
-                            res.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
-                            res.getEndTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-                }
+            if (reservedWorkspaces.isEmpty()) {
+                System.out.println("No reservations found.");
+                return;
             }
+
+            reservedWorkspaces.forEach(ws -> {
+                System.out.println("\nWorkspace " + ws.getId() + " (" + ws.getType() + "):");
+                ws.getReservations().forEach(res ->
+                        System.out.printf("- %s: %s to %s%n",
+                                res.getUsername(),
+                                res.getStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+                                res.getEndTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))));
+            });
         }
 
-        if (!hasReservations) {
-            System.out.println("No reservations found.");
-        }
-    }
 
 
 

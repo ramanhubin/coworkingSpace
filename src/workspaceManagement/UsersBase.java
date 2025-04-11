@@ -4,15 +4,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class usersBase implements Serializable
+public class UsersBase implements Serializable
 {
-    private final List<userInterface> users =new ArrayList<userInterface>();
+    private final List<User> users =new ArrayList<User>();
 
-    public void addUser(userInterface user){
+    public void addUser(User user){
         users.add(user);
     }
     public boolean userExist(String username) {
-        for(userInterface us: users) {
+        for(User us: users) {
             if(us.getUserName().equals(username)) { // Используем equals() вместо ==
                 return true;
             }
@@ -20,8 +20,8 @@ public class usersBase implements Serializable
         return false;
     }
 
-    public userInterface getUser(String username) {
-        for (userInterface user : users) {
+    public User getUser(String username) {
+        for (User user : users) {
             if (user.getUserName().equals(username)) {
                 return user;
             }
