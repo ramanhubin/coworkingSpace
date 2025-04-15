@@ -9,7 +9,9 @@ public class User implements Serializable {
     private final String userName;
     private final List<Reservation> userReservations;
 
+
     public User(String userName) {
+
         this.userName = userName;
         this.userReservations = new ArrayList<>();
 
@@ -30,6 +32,7 @@ public class User implements Serializable {
                 userReservations.add(reservation);
                 return true;
             }
+            
         }
         return false;
     }

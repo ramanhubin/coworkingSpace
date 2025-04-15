@@ -118,6 +118,7 @@ public class Main {
     private static void userMenu() {
         System.out.print("\nEnter your name: ");
         String userName = scanner.nextLine();
+
         User user;
         if(!usersBase.userExist(userName)) {
             user = new User(userName);
