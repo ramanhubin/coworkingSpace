@@ -120,7 +120,7 @@ public class Main {
         System.out.print("\nEnter your name: ");
         String userName = scanner.nextLine();
 
-        // Где-то в коде:
+        
         User user = usersBase.getOrCreateUser(userName);
         while (true) {
             System.out.println("\nUser Menu (" + userName + "):");

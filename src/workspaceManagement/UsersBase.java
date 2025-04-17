@@ -10,7 +10,6 @@ public class UsersBase  implements Serializable
 {
     private final HashMap<String, User> users = new HashMap<>();
     public User getOrCreateUser(String userName) {
-        // Атомарная операция "получить-или-создать"
         return users.computeIfAbsent(userName, User::new);
     }
     public boolean userExist(String username) {
