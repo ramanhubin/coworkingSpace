@@ -5,11 +5,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class userInterface implements Serializable {
+public class User implements Serializable {
     private final String userName;
     private final List<Reservation> userReservations;
 
-    public userInterface(String userName) {
+
+    public User(String userName) {
+
         this.userName = userName;
         this.userReservations = new ArrayList<>();
 
@@ -17,25 +19,26 @@ public class userInterface implements Serializable {
 
 
     public boolean makeReservation(LocalDateTime startTime, LocalDateTime endTime,
-                                   int workspaceId, List<workspace> workspaces) {
+                                   int workspaceId, List<Workspace> workspaces) {
         if (startTime.isAfter(endTime)) {
             System.out.println("Error: Start time must be before end time.");
             return false;
         }
 
-        for (workspace ws : workspaces) {
+        for (Workspace ws : workspaces) {
             if (ws.getId() == workspaceId && ws.checkAvailability(startTime, endTime)) {
                 Reservation reservation = new Reservation(userName, startTime, endTime, workspaceId);
                 ws.addReservation(reservation);
                 userReservations.add(reservation);
                 return true;
             }
+            
         }
         return false;
     }
 
-    public boolean cancelReservation(int workspaceId, List<workspace> workspaces) {
-        for (workspace ws : workspaces) {
+    public boolean cancelReservation(int workspaceId, List<Workspace> workspaces) {
+        for (Workspace ws : workspaces) {
             if (ws.getId() == workspaceId) {
                 boolean removed = ws.removeReservation(userName);
                 if (removed) {

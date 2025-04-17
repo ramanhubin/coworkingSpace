@@ -1,7 +1,8 @@
 package workspaceManagement;
 
+import CustomExceptions.SwitchCaseInputException;
+
 import java.io.IOException;
-import java.net.SocketOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -10,9 +11,9 @@ import java.util.Scanner;
 public class Main {
 
     private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-    private static final adminInterface adminInterface = new adminInterface();
+    private static final Admin adminInterface = new Admin();
     private static final Scanner scanner = new Scanner(System.in);
-    static usersBase usersBase = new usersBase();
+    static UsersBase usersBase = new UsersBase();
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         initializeSampleData();
@@ -61,9 +62,9 @@ public class Main {
     }
 
     private static void initializeSampleData() {    //Adding some data at start
-        adminInterface.addWorkspace(new workspace(1, "Closed Space", 15.0f));
-        adminInterface.addWorkspace(new workspace(2, "Private Office", 30.0f));
-        adminInterface.addWorkspace(new workspace(3, "Meeting Room", 25.0f));
+        adminInterface.addWorkspace(new Workspace(1, "Closed Space", 15.0f));
+        adminInterface.addWorkspace(new Workspace(2, "Private Office", 30.0f));
+        adminInterface.addWorkspace(new Workspace(3, "Meeting Room", 25.0f));
     }
 
     private static void adminMenu() {
@@ -99,7 +100,7 @@ public class Main {
         System.out.print("Enter hourly price: ");
         float price = readFloatInput();
 
-        adminInterface.addWorkspace(new workspace(id, type, price));
+        adminInterface.addWorkspace(new Workspace(id, type, price));
         System.out.println("Workspace added successfully!");
     }
 
@@ -117,9 +118,10 @@ public class Main {
     private static void userMenu() {
         System.out.print("\nEnter your name: ");
         String userName = scanner.nextLine();
-        userInterface user;
+
+        User user;
         if(!usersBase.userExist(userName)) {
-            user = new userInterface(userName);
+            user = new User(userName);
             usersBase.addUser(user);
         } else {
             user = usersBase.getUser(userName);
@@ -145,13 +147,13 @@ public class Main {
                     default -> System.out.println("Invalid option. Please try again.");
                 }
             }
-            catch(switchCaseInputException e) {
+            catch(SwitchCaseInputException e) {
                 System.out.println("Invalid data");
             }
         }
     }
 
-    private static void makeReservation(userInterface userInterface) {
+    private static void makeReservation(User userInterface) {
         adminInterface.viewAllWorkspaces();
 
         System.out.print("Enter workspace ID: ");
@@ -170,7 +172,7 @@ public class Main {
         }
     }
 
-    private static void viewUserReservations(userInterface userInterface) {
+    private static void viewUserReservations(User userInterface) {
         var reservations = userInterface.getUserReservations();
 
         if (reservations.isEmpty()) {
@@ -179,7 +181,7 @@ public class Main {
         }
 
         System.out.println("\nYour Reservations:");
-        for (var res : reservations) {
+        for (Reservation res : reservations) {
             System.out.printf("- Workspace ID: %d, From: %s, To: %s%n",
                     res.getWorkspaceId(),
                     res.getStartTime().format(TIME_FORMAT),
@@ -187,7 +189,7 @@ public class Main {
         }
     }
 
-    private static void cancelReservation(userInterface userInterface) {
+    private static void cancelReservation(User userInterface) {
         viewUserReservations(userInterface);
 
         if (userInterface.getUserReservations().isEmpty()) {
@@ -212,7 +214,7 @@ public class Main {
             try {
                 return Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
-                System.out.print("Invalid input. Please enter a number: ");
+                System.out.print("Invalid input. Please enter a number: "+e.getMessage());
             }
         }
     }
@@ -221,7 +223,7 @@ public class Main {
             try {
                 return Float.parseFloat(scanner.nextLine());
             } catch (NumberFormatException e) {
-                System.out.print("Invalid input. Please enter a number: ");
+                System.out.print("Invalid input. Please enter a number: "+e.getMessage());
             }
         }
     }
@@ -230,13 +232,13 @@ public class Main {
             try {
                 return LocalDateTime.parse(scanner.nextLine(), TIME_FORMAT);
             } catch (DateTimeParseException e) {
-                System.out.print("Invalid format. Please use yyyy-MM-dd HH:mm: ");
+                System.out.print("Invalid format. Please use yyyy-MM-dd HH:mm: "+e.getMessage());
             }
         }
     }
-    public static void checkLogInSwitchInput(int input) throws switchCaseInputException{
+    public static void checkLogInSwitchInput(int input) throws SwitchCaseInputException{
         if(input<1||input>5){
-            throw new switchCaseInputException("Input must be either 1 or 2");
+            throw new SwitchCaseInputException("Input must be either 1 or 2");
         }
     }
 

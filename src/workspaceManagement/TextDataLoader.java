@@ -7,10 +7,10 @@ import java.util.List;
 public class TextDataLoader {
     private static final String DATA_FILE = "workspaces.txt";
     private static final String SEPARATOR = "|";
-    private static List<workspace> loadedWorkspaces;
+    private static List<Workspace> loadedWorkspaces;
 
 
-    public static List<workspace> loadOnStartup() {
+    public static List<Workspace> loadOnStartup() {
         if (loadedWorkspaces != null) {
             return loadedWorkspaces;
         }
@@ -26,7 +26,7 @@ public class TextDataLoader {
         try (BufferedReader reader = new BufferedReader(new FileReader(DATA_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                workspace ws = parseWorkspace(line);
+                Workspace ws = parseWorkspace(line);
                 if (ws != null) {
                     loadedWorkspaces.add(ws);
                 }
@@ -40,9 +40,9 @@ public class TextDataLoader {
     }
 
 
-    public static void saveOnExit(List<workspace> workspaces) {
+    public static void saveOnExit(List<Workspace> workspaces) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(DATA_FILE))) {
-            for (workspace ws : workspaces) {
+            for (Workspace ws : workspaces) {
                 writer.write(String.format("%d%s%s%s%.2f",
                         ws.getId(), SEPARATOR,
                         ws.getType(), SEPARATOR,
@@ -56,13 +56,13 @@ public class TextDataLoader {
         }
     }
 
-    private static workspace parseWorkspace(String line) {
+    private static Workspace parseWorkspace(String line) {
         try {
             String[] parts = line.split("\\" + SEPARATOR, 3);
             if (parts.length != 3) {
                 throw new IllegalArgumentException("Invalid data format");
             }
-            return new workspace(
+            return new Workspace(
                     Integer.parseInt(parts[0].trim()),
                     parts[1].trim(),
                     Float.parseFloat(parts[2].trim())

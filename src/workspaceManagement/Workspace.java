@@ -5,13 +5,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class workspace implements Serializable {
+public class Workspace implements Serializable {
     private final int id;
     private final String type;
     private final float price;
     private final List<Reservation> reservations; //List to store reservations connected to a current workspace
 
-    public workspace(int id, String type, float price) {
+    public Workspace(int id, String type, float price) {
         this.id = id;
         this.type = type;
         this.price = price;

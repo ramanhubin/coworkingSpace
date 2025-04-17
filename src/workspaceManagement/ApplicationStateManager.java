@@ -4,10 +4,10 @@ import java.io.*;
 import java.util.List;
 public class ApplicationStateManager implements Serializable {
 
-    private usersBase usersBase;
-    private List<workspace> workspaces;
+    private UsersBase usersBase;
+    private List<Workspace> workspaces;
 
-    public ApplicationStateManager(usersBase usersBase, List<workspace> workspaces) {
+    public ApplicationStateManager(UsersBase usersBase, List<Workspace> workspaces) {
         this.usersBase = usersBase;
         this.workspaces = workspaces;
     }
@@ -25,11 +25,11 @@ public class ApplicationStateManager implements Serializable {
         }
     }
 
-    public usersBase getUsersBase() {
+    public UsersBase getUsersBase() {
         return usersBase;
     }
 
-    public List<workspace> getWorkspaces() {
+    public List<Workspace> getWorkspaces() {
         return workspaces;
     }
 }
