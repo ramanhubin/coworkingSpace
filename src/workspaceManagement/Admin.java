@@ -3,6 +3,7 @@ package workspaceManagement;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class Admin {
@@ -20,18 +21,19 @@ public class Admin {
     }
 
     public void viewAllWorkspaces() {
-        if (workspaces.isEmpty()) {
-            System.out.println("No workspaces available.");
-            return;
-        }
-
-        System.out.println("\nAvailable Workspaces:");
-        System.out.println("ID\tType\t\tPrice/Hour");
-        for (Workspace ws : workspaces) {
-            System.out.printf("%d\t%-15s\t$%.2f%n", ws.getId(), ws.getType(), ws.getPrice());
-        }
+        Optional.ofNullable(workspaces)
+                .filter(list -> !list.isEmpty())
+                .ifPresentOrElse(
+                        nonEmptyWorkspaces -> {
+                            System.out.println("\nAvailable Workspaces:");
+                            System.out.println("ID\tType\t\tPrice/Hour");
+                            nonEmptyWorkspaces.forEach(ws ->
+                                    System.out.printf("%d\t%-15s\t$%.2f%n",
+                                            ws.getId(), ws.getType(), ws.getPrice()));
+                        },
+                        () -> System.out.println("No workspaces available.")
+                );
     }
-
     public void viewAllReservations() {
             List<Workspace> reservedWorkspaces = workspaces.stream()
                     .filter(ws -> !ws.getReservations().isEmpty())
