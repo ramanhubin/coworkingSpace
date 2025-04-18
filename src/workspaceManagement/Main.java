@@ -6,16 +6,17 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Main {
-
-    private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-    private static final Admin adminInterface = new Admin();
-    private static final Scanner scanner = new Scanner(System.in);
+    static DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    static Admin adminInterface = new Admin();
+    static  Scanner scanner = new Scanner(System.in);
     static UsersBase usersBase = new UsersBase();
+    public static void main(String[] args) throws IOException {
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+
         initializeSampleData();
         TextDataLoader DataLoader = new TextDataLoader();
         adminInterface.setWorkspaces(TextDataLoader.loadOnStartup());
@@ -119,13 +120,8 @@ public class Main {
         System.out.print("\nEnter your name: ");
         String userName = scanner.nextLine();
 
-        User user;
-        if(!usersBase.userExist(userName)) {
-            user = new User(userName);
-            usersBase.addUser(user);
-        } else {
-            user = usersBase.getUser(userName);
-        }
+
+        User user = usersBase.getOrCreateUser(userName);
         while (true) {
             System.out.println("\nUser Menu (" + userName + "):");
             System.out.println("1. Browse available spaces");

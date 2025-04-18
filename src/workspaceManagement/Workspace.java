@@ -17,9 +17,11 @@ public class Workspace implements Serializable {
         this.price = price;
         this.reservations = new ArrayList<>();
     }
-public int getWorkspaceId(){
+
+    public int getWorkspaceId() {
         return id;
-}
+    }
+
     public int getId() {
         return id;
     }
@@ -41,8 +43,14 @@ public int getWorkspaceId(){
         return true;
     }
 
-    public void addReservation(Reservation reservation) { //Adding new reservation
-        reservations.add(reservation);
+    public boolean addReservation(Reservation reservation) { //Adding new reservation
+        if (reservation != null) {
+            return reservations.add(reservation);
+        } else{
+            System.out.println("Reservation can't be null");
+        }
+        return false;
+
     }
 
     public boolean removeReservation(String userName) {
