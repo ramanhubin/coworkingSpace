@@ -1,5 +1,7 @@
 package com.CoworkingSpace;
 
+import lombok.Getter;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 

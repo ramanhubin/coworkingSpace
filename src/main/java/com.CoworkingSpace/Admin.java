@@ -35,7 +35,7 @@ public class Admin {
                 );
     }
     public void viewAllReservations() {
-        List<Workspace> reservedWorkspaces = workspaces.stream()
+        List<Workspace> reservedWorkspaces = workspaces.parallelStream()
                 .filter(ws -> !ws.getReservations().isEmpty())
                 .toList();
 
